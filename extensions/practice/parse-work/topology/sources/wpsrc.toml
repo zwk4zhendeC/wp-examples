@@ -19,5 +19,4 @@ params= { topic = "wp.input.event" ,brokers = "106.55.164.250:9092" }
 # key = "kafka_output_tap"
 # connect = "kafka_src"
 # #tags = ["type:file", "purpose:benchmark"]
-# params = {  topic = "wp.output.event"  }
-
+# params = { topic = "wp.output.event" }
