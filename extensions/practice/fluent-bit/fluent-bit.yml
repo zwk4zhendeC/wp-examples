@@ -2,19 +2,10 @@ service:
   flush: 1
   daemon: no
   log_level: info
-
-# 定义解析器
-parsers:
-  - name: docker_json
-    format: json
-    time_key: time
-    time_format: "%Y-%m-%dT%H:%M:%S.%L"
-    time_keep: true
-
 pipeline:
   inputs:
     - name: tail
-      path: ../common-logs/nginx.log
+      path: ./test-logs/*.log
       read_from_head: true
     - name: tcp
       listen: 0.0.0.0
@@ -29,7 +20,7 @@ pipeline:
 
     - name: tcp
       match: "*"
-      host: localhost
+      host: host.docker.internal
       port: 19002
       format: json_lines
     # - name: syslog
@@ -39,19 +30,3 @@ pipeline:
     #   mode: tcp
     #   syslog_message_key: log
     #   syslog_format: rfc3164
-    # # 指标输出到 VictoriaMetrics
-    # - name: prometheus_remote_write
-    #   match: "metrics.*"
-    #   host: "43.139.205.130"
-    #   port: 30428
-    #   uri: "/api/v1/write"
-    #   header:
-    #     - "Content-Type application/x-protobuf"
-    #     - "Content-Encoding snappy"
-    #     - "X-Prometheus-Remote-Write-Version 0.1.0"
-    #   add_label:
-    #     - source fluent-bit
-    #     - instance docker-production
-    #     - hostname "${HOSTNAME}"
-    #   tls: off
-    #   retry_limit: 3
