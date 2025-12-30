@@ -1,0 +1,12 @@
+version = "2.0"
+
+[sink_group]
+name = "file_01"
+rule = ["/nginx/*"]
+[[sink_group.sinks]]
+connect = "file_json_sink"
+params = { file = "nginx.dat" }
+
+[sink_group.sinks.expect]
+ratio = 0.50
+tol   = 0.02

@@ -1,5 +1,6 @@
 version: "3"
 services:
+# http://host.docker.internal:8080/system-obs/alert/alert-message
   kafka:
     # image: bitnami/kafka:latest
     image: dysec-docker-stable.corp.dy-sec.com/bitnami/kafka:latest-arm
@@ -27,3 +28,25 @@ services:
       - KAFKA_CFG_FETCH_MESSAGE_MAX_BYTES=10485760
     volumes:
       - ./tmp/kafka:/bitnami/kafka/data
+
+  fluent-bit:
+    image: fluent/fluent-bit:4.0.3
+    container_name: fluent-bit
+    restart: unless-stopped
+    command: ["/fluent-bit/bin/fluent-bit", "-c", "/fluent-bit/etc/fluent-bit.yml"]
+    volumes:
+      # Mount configuration file
+      - ./fluent-bit/fluent-bit.yml:/fluent-bit/etc/fluent-bit.yml:ro
+      # Mount system logs
+      - /var/log:/var/log:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      # Mount system files for metrics collection
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+      # Mount machine-id for identification
+      - /etc/machine-id:/etc/machine-id:ro
+    privileged: true
+    pid: host
+    ports:
+      - "2020:2020"  # Fluent Bit HTTP server for health checks
