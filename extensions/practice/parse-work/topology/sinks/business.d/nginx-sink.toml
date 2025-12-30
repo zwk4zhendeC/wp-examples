@@ -3,6 +3,7 @@ version = "2.0"
 [sink_group]
 name = "file_01"
 rule = ["/nginx/*"]
+
 [[sink_group.sinks]]
 connect = "file_json_sink"
 params = { file = "nginx.dat" }
@@ -10,3 +11,18 @@ params = { file = "nginx.dat" }
 [sink_group.sinks.expect]
 ratio = 0.50
 tol   = 0.02
+
+
+[[sink_group.sinks]]
+# 仅当存在 connect 时，其他 output 字段和旧式 [output.*] 子块将被忽略
+connect = "kafka_sink"
+name = "generator_output"
+# 覆写允许的参数（参考 connectors/sink.d 中对应连接器 allow_override）
+params= { topic = "wp.output.event" ,brokers = "106.55.164.250:9092" }
+
+# [[sink_group.sinks]]
+# name = "kafka_out"
+# connect = "kafka_sink"
+# [sink_group.sinks.params]
+# topic= "wp.output.event"
+# brokers = "106.55.164.250:9092"

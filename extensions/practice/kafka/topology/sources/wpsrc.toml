@@ -4,12 +4,13 @@ enable = true
 key = "kafka_input"
 connect = "kafka_src"
 #tags = ["type:file", "purpose:benchmark"]
-params = {  topic = "wp.input.event"  }
+# params = {  topic = "wp.input.event" , brokers = "43.138.236.82:30011" }
+params = {  topic = "wp.input.event" , brokers = "106.55.164.250:9092" }
 
 
-[[sources]]
-enable = true
-key = "kafka_output_tap"
-connect = "kafka_src"
-#tags = ["type:file", "purpose:benchmark"]
-params = {  topic = "wp.output.event"  }
+# [[sources]]
+# enable = true
+# key = "kafka_output_tap"
+# connect = "kafka_src"
+# #tags = ["type:file", "purpose:benchmark"]
+# params = {  topic = "wp.output.event"  }

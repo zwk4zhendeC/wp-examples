@@ -17,3 +17,5 @@ name = "kafka_out"
 connect = "kafka_sink"
 [sink_group.sinks.params]
 topic= "wp.testcase.events.parsed"
+brokers = "106.55.164.250:9092"
+# brokers = "43.138.236.82:30011" 

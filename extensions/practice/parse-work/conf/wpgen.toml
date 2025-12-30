@@ -25,7 +25,7 @@ parallel = 2
 connect = "kafka_sink"
 name = "generator_output"
 # 覆写允许的参数（参考 connectors/sink.d 中对应连接器 allow_override）
-params= { topic = "wp.testcase.events.raw" }
+params= { topic = "wp.input.event" ,brokers = "106.55.164.250:9092" }
 
 [logging]
 level = ""

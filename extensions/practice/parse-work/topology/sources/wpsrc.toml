@@ -11,7 +11,7 @@ enable = true
 key = "kafka_input"
 connect = "kafka_src"
 #tags = ["type:file", "purpose:benchmark"]
-params = {  topic = "wp.input.event"  }
+params= { topic = "wp.input.event" ,brokers = "106.55.164.250:9092" }
 
 
 # [[sources]]
