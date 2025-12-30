@@ -4,13 +4,14 @@ enable =  true
 key = "tcp_1"
 connect = "tcp_src"
 params = { prefer_newline = true , port =19002, instances = 1}
+tags = ["src:tcp"]
 
 # kafka输入源
 [[sources]]
 enable = true
 key = "kafka_input"
 connect = "kafka_src"
-#tags = ["type:file", "purpose:benchmark"]
+tags = ["src:kafka","topic:wp.input.event"]
 params= { topic = "wp.input.event" ,brokers = "106.55.164.250:9092" }
 
 
@@ -19,4 +20,5 @@ params= { topic = "wp.input.event" ,brokers = "106.55.164.250:9092" }
 # key = "kafka_output_tap"
 # connect = "kafka_src"
 # #tags = ["type:file", "purpose:benchmark"]
-# params = { topic = "wp.output.event" }
+# params = {  topic = "wp.output.event"  }
+

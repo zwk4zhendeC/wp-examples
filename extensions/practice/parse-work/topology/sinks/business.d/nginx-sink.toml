@@ -4,6 +4,7 @@ version = "2.0"
 name = "file_01"
 rule = ["/nginx/*"]
 
+# file
 [[sink_group.sinks]]
 connect = "file_json_sink"
 params = { file = "nginx.dat" }
@@ -12,13 +13,17 @@ params = { file = "nginx.dat" }
 ratio = 0.50
 tol   = 0.02
 
-
+# Kafka
 [[sink_group.sinks]]
-# 仅当存在 connect 时，其他 output 字段和旧式 [output.*] 子块将被忽略
 connect = "kafka_sink"
 name = "generator_output"
-# 覆写允许的参数（参考 connectors/sink.d 中对应连接器 allow_override）
 params= { topic = "wp.output.event" ,brokers = "106.55.164.250:9092" }
+
+# vlog
+[[sink_group.sinks]]
+name = "victorialogs_output"
+connect = "victorialogs_sink"
+params = { endpoint = "http://106.55.164.250:9428", insert_path = "/insert/jsonline", flush_interval_secs = 3, create_time_field="timestamp" }
 
 # [[sink_group.sinks]]
 # name = "kafka_out"
