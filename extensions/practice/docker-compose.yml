@@ -19,6 +19,7 @@ services:
       - "5170:5170"
     networks:
       - app-network
+      
   kafka:
     container_name: kafka
     image: bitnami/kafka:latest
