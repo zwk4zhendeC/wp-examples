@@ -1,33 +1,69 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# 加载 benchmark 公共函数库
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-BENCHMARK_LIB="$(cd "$SCRIPT_DIR/.." && pwd)/benchmark_common.sh"
-source "$BENCHMARK_LIB"
+# =========================
+# 记录初始目录（关键）
+# =========================
+ORIG_DIR="$(pwd)"
 
-# 显示用法（不包含 -f 选项）
-if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
-  benchmark_usage "$0" ""
-  exit 0
-fi
+# =========================
+# 基础配置
+# =========================
+BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
+WORK_DIR="$BASE_DIR/parse-work"
+LOG_DIR="$WORK_DIR/data/logs"
 
-# 解析参数（只支持 -m）
-benchmark_parse_args "$@"
+mkdir -p "$LOG_DIR"
 
-# 初始化环境
-benchmark_init_env
+# =========================
+# 清理函数
+# =========================
+cleanup() {
+    echo "[INFO] Cleaning up..."
 
-# 验证 WPL 路径
-benchmark_validate_wpl_path "$WPL_DIR"
+    # 1. 杀掉当前进程组下的所有子进程
+    kill -- -$$ 2>/dev/null || true
 
-# 初始化配置
-wproj check
-wproj data clean
-wpgen data clean
+    # 2. 回到脚本启动前的目录
+    cd "$ORIG_DIR" || true
 
-# 设置数据规模
-benchmark_set_line_cnt
+    # 3. 关闭 docker compose
+    docker compose down || true
 
-# 执行 daemon 模式测试（运行 30 秒）
-benchmark_run_daemon "$WPL_PATH" "$SPEED_MAX" "$LINE_CNT" "wpgen.toml"
+    echo "[INFO] Cleanup completed."
+}
+
+# 捕获所有关键退出信号
+trap cleanup EXIT INT TERM
+
+# =========================
+# 启动 docker
+# =========================
+docker compose up -d
+
+# =========================
+# 进入工作目录
+# =========================
+cd "$WORK_DIR"
+
+# =========================
+# 启动后台进程
+# =========================
+wparse daemon --stat 2 -p \
+  > "$LOG_DIR/wparse-info.log" 2>&1 &
+
+wpgen sample -c wpgen-kafka.toml --stat 2 -p \
+  > "$LOG_DIR/wpgen-kafka.log" 2>&1 &
+
+wpgen sample -c wpgen-tcp.toml --stat 2 -p \
+  > "$LOG_DIR/wpgen-tcp.log" 2>&1 &
+
+wpgen sample -c wpgen-file.toml --stat 2 -p \
+  > "$LOG_DIR/wpgen-file.log" 2>&1 &
+
+echo "[INFO] All processes started."
+
+# =========================
+# 阻塞主进程
+# =========================
+wait

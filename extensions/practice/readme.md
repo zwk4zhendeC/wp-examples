@@ -25,6 +25,8 @@
 
 
 ## 项目使用
+> 前置条件：可以拉取docker-copmose中的镜像,并且镜像的CPU架构一致
+### 方式1 手工启动
 - 进入工作目录：`cd wp-examples/extensions/practice`
 - 将docker-compose中kafka相关的地址信息改为实际地址：
 ![1767163583267](image/readme/1767163583267.png)
@@ -36,3 +38,8 @@
     - `wpgen sample -c wpgen-kafka.toml --stat 2 -p`
     - `wpgen sample -c wpgen-tcp.toml --stat 2 -p`
     - `wpgen sample -c wpgen-file.toml --stat 2 -p`
+
+
+### 方式二 一键化启动脚本
+- 进入工作目录：`cd wp-examples/extensions/practice`
+- 执行：`./run.sh`

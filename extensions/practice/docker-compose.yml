@@ -23,6 +23,7 @@ services:
   kafka:
     container_name: kafka
     image: bitnami/kafka:latest
+    # image: dysec-docker-stable.corp.dy-sec.com/bitnami/kafka:latest-arm
     ports:
       - "9092:9092"
     # volumes:
@@ -84,7 +85,8 @@ services:
     ports:
       - "8428:8428"
     volumes:
-      - /data/metrics:/storage:rw
+      # 数据存储目录，按需开启
+      # - /data/metrics:/storage:rw
       - ./victoria-metrics/scrape.yml:/scrapeconfig/scrape.yml:ro  # 挂载 scrape 配置
     command:
       - --envflag.enable
@@ -111,8 +113,9 @@ services:
     image: dysec-docker-stable.corp.dy-sec.com/victoria/victoria-logs:1.95.1
     ports:
       - "9428:9428"
-    volumes:
-      - /data/logs:/storage:rw
+    # 数据存储目录,按需开启
+    # volumes:
+    #   - /data/logs:/storage:rw
     command:
       - --envflag.enable
       - --envflag.prefix=VM_
