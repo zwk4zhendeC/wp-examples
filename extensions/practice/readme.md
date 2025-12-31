@@ -42,4 +42,6 @@
 
 ### 方式二 一键化启动脚本
 - 进入工作目录：`cd wp-examples/extensions/practice`
+- 将docker-compose中kafka相关的地址信息改为实际地址：
+![1767163583267](image/README/1767163583267.png)
 - 执行：`./run.sh`
