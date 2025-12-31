@@ -10,6 +10,7 @@ pipeline:
   inputs:
     - name: tail
       path: ./test-logs/*.dat
+      path_key: filename
       # read_from_head: true
     - name: tcp
       listen: 0.0.0.0

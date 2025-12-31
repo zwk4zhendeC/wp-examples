@@ -17,17 +17,17 @@ tol   = 0.02
 [[sink_group.sinks]]
 connect = "kafka_sink"
 name = "generator_output"
-params= { topic = "wp.output.event" ,brokers = "106.55.164.250:9092" }
+params= { topic = "wp.output.event" ,brokers = "localhost:9092" }
 
 # vlog
 [[sink_group.sinks]]
 name = "victorialogs_output"
 connect = "victorialogs_sink"
-params = { endpoint = "http://106.55.164.250:9428", insert_path = "/insert/jsonline", flush_interval_secs = 3, create_time_field="timestamp" }
+params = { endpoint = "http://localhost:9428", insert_path = "/insert/jsonline", flush_interval_secs = 3, create_time_field="timestamp" }
 
 # [[sink_group.sinks]]
 # name = "kafka_out"
 # connect = "kafka_sink"
 # [sink_group.sinks.params]
 # topic= "wp.output.event"
-# brokers = "106.55.164.250:9092"
+# brokers = "localhost:9092"
