@@ -62,7 +62,7 @@ services:
 
   kafka-exporter:
     container_name: kafka-exporter
-    image: dysec-docker-stable.corp.dy-sec.com/danielqsj/kafka-exporter:v1.9.0
+    image: danielqsj/kafka-exporter:v1.9.0
     command: ["--kafka.server=kafka:9092"]
     restart: on-failure
     depends_on:
@@ -81,7 +81,7 @@ services:
 
   victoria-metrics:
     container_name: victoria-metrics
-    image: dysec-docker-stable.corp.dy-sec.com/victoria/victoria-metrics:1.95.1
+    image: victoriametrics/victoria-metrics:1.95.1
     ports:
       - "8428:8428"
     volumes:
@@ -110,7 +110,7 @@ services:
 
   victoria-logs:
     container_name: victoria-logs
-    image: dysec-docker-stable.corp.dy-sec.com/victoria/victoria-logs:1.95.1
+    image: victoriametrics/victoria-logs:1.95.1
     ports:
       - "9428:9428"
     # 数据存储目录,按需开启
@@ -136,19 +136,19 @@ services:
       retries: 3
       start_period: 30s
 
-  wp-monitor:
-    container_name: wp-monitor
-    image: dysec-docker-alpha.corp.dy-sec.com/wp-monitor:1.0-alpha.6
-    ports:
-      - "25816:25816"
-    networks:
-      - app-network
-    healthcheck:
-      test: ["CMD-SHELL", "ps -aux | grep /app/wp_monitor -q"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
+  # wp-monitor:
+  #   container_name: wp-monitor
+  #   image: dysec-docker-alpha.corp.dy-sec.com/wp-monitor:1.0-alpha.6
+  #   ports:
+  #     - "25816:25816"
+  #   networks:
+  #     - app-network
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "ps -aux | grep /app/wp_monitor -q"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 30s
 
 networks:
   app-network:

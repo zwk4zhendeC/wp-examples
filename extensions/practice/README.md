@@ -1,7 +1,6 @@
 ## 示例介绍
-本示例是一个基于实践场景下的用例。![1767162097615](image/README/1767162097615.png)
-上面是该用例的数据流程图。
-
+本示例是一个基于实践场景下的用例。该场景包括了日志收集、解析、入多个库、监控，上面是该用例的示意图。
+![alt text](image/README/image.png)
 - wpgen定期向文件、fluent-bit TCP、Kafka发送数据，模拟日志来源。
 - fluent-bit收集文件日志、监听5170端口，将日志转发到wparse做解析。
 - wparse监听TCP和Kafka，将接收各类日志进行解析和分类，并根据日志类型（目前只有nginx）转发到不同的输出源，如kafka、文件、vlogs。
@@ -42,4 +41,6 @@
 
 ### 方式二 一键化启动脚本
 - 进入工作目录：`cd wp-examples/extensions/practice`
+- 将docker-compose中kafka相关的地址信息改为实际地址：
+![1767163583267](image/README/1767163583267.png)
 - 执行：`./run.sh`
